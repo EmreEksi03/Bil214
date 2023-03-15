@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-#include <time.h>
+#include <sys/time.h>
 
 char *reverse(char *input)
 {
@@ -45,17 +45,19 @@ int main()
     scanf("%s", input);
     char *string = reverse(input);
     printf("%s", string);
-    free(&string);
+    free(string);
+    printf("\n\n");
 
-    clock_t start = clock();
+    struct timeval begin, end;
+    gettimeofday(&begin, 0);
     for (int i=0;i<1000;i++){
         float x = (float)rand()/(float)(RAND_MAX);
         taylor(x,10);
         taylor(x,15);
         taylor(x,18);
     }
-    clock_t end = clock();
-    double duration = ((double)end - start)/CLOCKS_PER_SEC;
-    printf("%s","The total running time is: %d",duration);
+    gettimeofday(&end, 0);
+    long microseconds = end.tv_usec - begin.tv_usec;
+    printf("The total running time is: %lli microseconds.",microseconds);
     return 0;
 }
